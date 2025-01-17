@@ -1,6 +1,8 @@
 var express = require('express');
-const {QueryTypes} = require("sequelize");
 var router = express.Router();
+const toDoController = require("../controllers/todo_controller.js")
+
+const {QueryTypes} = require("sequelize");
 
 /* GET home page. */
 router.get('/',  async function(req, res, next) {
