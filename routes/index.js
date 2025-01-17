@@ -4,8 +4,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/',  async function(req, res, next) {
-  const {sequelize} = require(".../models/index");
-  const {QueryTypes} = requre("sequelize");
+  const {sequelize} = require("../models/index");
+  const {QueryTypes} = require("sequelize");
 
   let toDoItems = await sequelize.query('select * from todo', {type: QueryTypes.SELECT });
   res.render('index', {toDoItems});
@@ -14,9 +14,8 @@ router.get('/',  async function(req, res, next) {
 router.get('/add', function(req, res){
   res.render('create_todo');
 })
-
 router.post('/add', async function(req, res){
-  const {sequelize} = require(".../models/index");
+  const {sequelize} = require("../models/index");
   const {QueryTypes} = require("sequelize");
   await sequelize.query('insert into todo (description) values (:description)', {
     type: QueryTypes.INSERT,
@@ -25,10 +24,10 @@ router.post('/add', async function(req, res){
     }
   });
   res.redirect('/');
-});
+})
 
 router.get('/complete/:id', async function(req, res) {
-  const {sequelize} = require(".../models/index");
+  const {sequelize} = require("../models/index");
   const {QueryTypes} = require("sequelize");
   await sequelize.query('update todo set completed = true where id = :id', {
     type: QueryTypes.UPDATE,
@@ -39,7 +38,7 @@ router.get('/complete/:id', async function(req, res) {
   res.redirect('/');
 })
 router.get('/incomplete/:id', async function(req, res) {
-  const {sequelize} = require(".../models/index");
+  const {sequelize} = require("../models/index");
   const {QueryTypes} = require("sequelize");
   await sequelize.query('update todo set completed = false where id = :id', {
     type: QueryTypes.UPDATE,
@@ -51,7 +50,7 @@ router.get('/incomplete/:id', async function(req, res) {
 })
 
 router.get('/delete/:id', async function(req, res) {
-  const {sequelize} = require(".../models/index");
+  const {sequelize} = require("../models/index");
   const {QueryTypes} = require("sequelize");
   await sequelize.query('delete from todo where id = id', {
     type: QueryTypes.DELETE,
@@ -63,7 +62,7 @@ router.get('/delete/:id', async function(req, res) {
 })
 
 router.get('/edit/:id', async function(req, res) {
-  const {sequelize} = require(".../models/index");
+  const {sequelize} = require("../models/index");
   const {QueryTypes} = require("sequelize");
   const results = await sequelize.query('select * from todo where id=:id', {
     type: QueryTypes.SELECT,
@@ -76,7 +75,7 @@ router.get('/edit/:id', async function(req, res) {
   res.render('edit_todo', {item})
 })
 router.post('/edit', async function(req, res) {
-  const {sequelize} = require(".../models/index");
+  const {sequelize} = require("../models/index");
   const {QueryTypes} = require("sequelize");
   await sequelize.query('update todo set description = :description where id=:id', {
     type: QueryTypes.UPDATE,
