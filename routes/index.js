@@ -15,29 +15,7 @@ router.get('/incomplete/:id', toDoController.markItemAsIncomplete);
 
 router.get('/delete/:id', toDoController.deleteItem);
 
-router.get('/edit/:id', async function(req, res) {
-  const {sequelize} = require("../models/index");
-  const {QueryTypes} = require("sequelize");
-  const results = await sequelize.query('select * from todo where id=:id', {
-    type: QueryTypes.SELECT,
-    replacements: {
-      id: req.params.id
-    }
-  });
-  const item = results[0];
-  console.log(results);
-  res.render('edit_todo', {item})
-})
-router.post('/edit', async function(req, res) {
-  const {sequelize} = require("../models/index");
-  const {QueryTypes} = require("sequelize");
-  await sequelize.query('update todo set description = :description where id=:id', {
-    type: QueryTypes.UPDATE,
-    replacements: {
-      id: req.params.id,
-      description: req.body.description
-    }
-  });
-  res.redirect('/');
-})
+router.get('/edit/:id', toDoController.renderEditForm);
+
+router.post('/edit:id', toDoController.updateItem);
 module.exports = router;

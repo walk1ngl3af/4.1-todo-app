@@ -1,15 +1,16 @@
-const {sequelize} = require("../models");
+const {sequelize} = require("../models/index");
 const {QueryTypes} = require("sequelize");
+
 module.exports.homeRoute = async function(req, res, next) {
     const {sequelize} = require('../models/index');
     const {QueryTypes} = require('sequelize');
 
     let toDoItems = await sequelize.query('select * from todo', {type: QueryTypes.SELECT});
     res.render('index', {toDoItems});
-}
+};
 module.exports.renderAddForm = function(req, res) {
     res.render('create_todo');
-}
+};
 module.exports.addNewItem = async function(req, res) {
     const {sequelize} = require("../models/index");
     const {QueryTypes} = require("sequelize");
@@ -20,7 +21,7 @@ module.exports.addNewItem = async function(req, res) {
         }
     });
     res.redirect('/');
-}
+};
 
 module.exports.markItemAsComplete = async function(req, res) {
     const {sequelize} = require("../models/index");
@@ -32,7 +33,7 @@ module.exports.markItemAsComplete = async function(req, res) {
         }
     });
     res.redirect('/');
-}
+};
 
 module.exports.markItemAsIncomplete = async function(req, res) {
     const {sequelize} = require("../models/index");
@@ -44,7 +45,7 @@ module.exports.markItemAsIncomplete = async function(req, res) {
         }
     });
     res.redirect('/');
-}
+};
 
 module.exports.deleteItem = async function(req, res) {
     const {sequelize} = require("../models/index");
@@ -56,7 +57,7 @@ module.exports.deleteItem = async function(req, res) {
         }
     });
     res.redirect('/');
-}
+};
 
 module.exports.renderEditForm = async function(req, res) {
     const {sequelize} = require("../models/index");
@@ -69,4 +70,17 @@ module.exports.renderEditForm = async function(req, res) {
     });
     const item = results[0];
     res.render('edit_todo', {item})
-}
+};
+
+module.exports.updateItem = async function(req, res) {
+    const {sequelize} = require("../models/index");
+    const {QueryTypes} = require("sequelize");
+    await sequelize.query('update todo set description = :description where id=:id', {
+        type: QueryTypes.UPDATE,
+        replacements: {
+            id: req.params.id,
+            description: req.body.description
+        }
+    });
+    res.redirect('/');
+};
