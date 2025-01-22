@@ -1,3 +1,4 @@
 node_modules/
 .idea/
 config/config.json
+/migrations/20250122170134-create-todo.js
